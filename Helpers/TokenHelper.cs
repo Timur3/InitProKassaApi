@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using InitPro.Kassa.Api.Models;
 using InitPro.Kassa.Api.Models.Response;
 using Microsoft.Extensions.Options;
