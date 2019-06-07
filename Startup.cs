@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using InitPro.Kassa.Api.Helpers;
+using InitPro.Kassa.Api.Models;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +21,9 @@ namespace InitPro.Kassa.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddHttpClient();
+            services.AddTransient<TokenHelper>();
+            services.Configure<InitProSettings>(Configuration.GetSection("InitProSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

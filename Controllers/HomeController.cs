@@ -1,40 +1,32 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using InitPro.Kassa.Api.Helpers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace InitPro.Kassa.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/{id?}")]
     [ApiController]
     public class HomeController : ControllerBase
     {
+        private readonly TokenHelper _kassaH;
+
+        public HomeController(TokenHelper kassaHelper)
+        {
+            _kassaH = kassaHelper;
+        }
+
         [HttpGet]
         public IActionResult Get()
         {
             return Ok("Service started!");
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
-
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post(int id)
         {
-        }
+            var t = _kassaH.GetToken().token;
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return Ok(id.ToString());
         }
     }
 }

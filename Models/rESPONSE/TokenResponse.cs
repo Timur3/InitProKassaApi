@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InitPro.Kassa.Api.Models
+namespace InitPro.Kassa.Api.Models.Response
 {
     public class Token
     {

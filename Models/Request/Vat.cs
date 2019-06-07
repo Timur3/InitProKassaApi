@@ -1,6 +1,6 @@
 ﻿using InitPro.Kassa.Api.Enums;
 
-namespace InitPro.Kassa.Api.Models
+namespace InitPro.Kassa.Api.Models.Request
 {
     public class Vat
     {
