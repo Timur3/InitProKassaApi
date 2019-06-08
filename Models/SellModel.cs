@@ -7,7 +7,8 @@ namespace InitPro.Kassa.Api.Models
 {
     public class SellModel
     {
-        public int Id { get; set; }
+        public string Token { get; set; }
+        public string Id { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public string ItemName { get; set; }

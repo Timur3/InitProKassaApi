@@ -6,7 +6,7 @@ namespace InitPro.Kassa.Api.Models.Request
     {
         public string name { get; set; }
         public decimal price { get; set; }
-        public int quantity { get; set; }
+        public decimal quantity { get; set; }
         public decimal sum { get; set; }
         public string measurement_unit { get; set; }
         public PaymentMethod payment_method { get; set; }

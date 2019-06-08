@@ -1,4 +1,5 @@
 ﻿using InitPro.Kassa.Api.Helpers;
+using InitPro.Kassa.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InitPro.Kassa.Api.Controllers
@@ -7,20 +8,24 @@ namespace InitPro.Kassa.Api.Controllers
     [ApiController]
     public class SellController : ControllerBase
     {
-        private readonly TokenHelper _kassaH;
+        private readonly TokenHelper _tokenH;
+        private readonly SellHelper _sellH;
 
-        public SellController(TokenHelper kassaHelper)
+        public SellController(TokenHelper tokenHelper, SellHelper sellH)
         {
-            _kassaH = kassaHelper;
+            _tokenH = tokenHelper;
+            _sellH = sellH;
         }
-
-        // POST api/values
+        
         [HttpPost]
-        public IActionResult Post(int id)
+        public IActionResult Post(SellModel model)
         {
-            var t = _kassaH.GetToken().token;
+            var tokenResponse = _tokenH.GetToken();
+            model.Token = tokenResponse.token;
 
-            return Ok(id.ToString());
+            var sellResponse = _sellH.SellReceiptAccepted(model);
+
+            return Ok();
         }
     }
 }
