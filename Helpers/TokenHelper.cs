@@ -9,11 +9,9 @@ namespace InitPro.Kassa.Api.Helpers
     public class TokenHelper
     {
         private readonly InitProSettings _settings;
-        private readonly IHttpClientFactory _httpClient;
 
-        public TokenHelper(IHttpClientFactory httpClient, IOptions<InitProSettings> options)
-        {
-            _httpClient = httpClient;
+        public TokenHelper(IOptions<InitProSettings> options)
+        {         
             _settings = options.Value;
         }
 
@@ -27,7 +25,6 @@ namespace InitPro.Kassa.Api.Helpers
                 login = _settings.Login,
                 pass = _settings.Pass
             };
-
             var client = new RestClient(_baseUrl + operation);
             var request = new RestRequest(Method.POST);
             request.AddHeader("content-type", "application/json");
