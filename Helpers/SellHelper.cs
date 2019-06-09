@@ -11,10 +11,12 @@ namespace InitPro.Kassa.Api.Helpers
     public class SellHelper
     {
         private readonly InitProSettings _settings;
+        private readonly VatHelper _vatHelper;
 
-        public SellHelper(IOptions<InitProSettings> options)
+        public SellHelper(IOptions<InitProSettings> options, VatHelper vatHelper)
         {
             _settings = options.Value;
+            _vatHelper = vatHelper;
         }
 
         public SellResponse SellReceiptAccepted(SellModel model)
@@ -48,36 +50,40 @@ namespace InitPro.Kassa.Api.Helpers
                             quantity = model.Quantity,
                             sum = model.Sum,
                             agent_info = null,
-                            measurement_unit = null,
+                            measurement_unit = model.MeasurementUnit,
                             payment_method = PaymentMethod.full_payment,
                             payment_object = PaymentObject.commodity,
                             vat = new Vat()
                             {
-                                sum = model.Sum,
                                 type = VatType.vat20
                             }
                         }
                     },
-                    payments =new Payment[]
+                    payments = new Payment[]
                     {
-                        new Payment(), 
+                        new Payment()
+                        {
+                            type = PaymentType.Electronic,
+                            sum = model.Sum
+                        }
                     },
                     total = model.Sum,
                     vats = new Vat[]
                     {
                         new Vat()
                         {
-                            sum = model.Sum,
+                            sum = _vatHelper.GetVatSum(model.Sum, VatType.vat20),
                             type = VatType.vat20
                         }
                     }
                 },
                 service = new Service()
                 {
-                    callback_url = ""
+                    callback_url = null
                 },
                 timestamp = DateTime.Now
             };
+
             var client = new RestClient(baseUrl + operation);
             var request = new RestRequest(Method.POST);
             request.AddHeader("content-type", "application/json");
