@@ -88,7 +88,7 @@ namespace InitPro.Kassa.Api.Helpers
 
             var client = new RestClient(baseUrl + _settings.GroupCode + operation);
             var request = new RestRequest(Method.POST);
-            var param = Newtonsoft.Json.JsonConvert.SerializeObject(sellRequest, Formatting.Indented, new JsonSerializerSettings
+            var param = JsonConvert.SerializeObject(sellRequest, Formatting.Indented, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });

@@ -25,6 +25,7 @@ namespace InitPro.Kassa.Api
             services.AddTransient<TokenHelper>();
             services.AddTransient<SellHelper>();
             services.AddTransient<VatHelper>();
+            services.AddTransient<ReportHelper>();
             services.Configure<InitProSettings>(Configuration.GetSection("InitProSettings"));
         }
 

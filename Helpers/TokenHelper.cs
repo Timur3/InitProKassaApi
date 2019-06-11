@@ -25,6 +25,7 @@ namespace InitPro.Kassa.Api.Helpers
                 login = _settings.Login,
                 pass = _settings.Pass
             };
+
             var client = new RestClient(baseUrl + operation);
             var request = new RestRequest(Method.POST);
             request.AddHeader("content-type", "application/json");

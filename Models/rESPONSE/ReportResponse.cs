@@ -8,7 +8,7 @@ namespace InitPro.Kassa.Api.Models.Response
         public Error error { get; set; }
         public Status status { get; set; }
         public PayLoad payloud { get; set; }
-        public DateTime timestamp { get; set; }
+        public string timestamp { get; set; }
         public string group_code { get; set; }
         public string daemon_code { get; set; }
         public string device_code { get; set; }
