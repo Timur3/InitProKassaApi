@@ -1,10 +1,13 @@
-﻿using InitPro.Kassa.Api.Helpers;
+﻿using System.Collections.Generic;
+using System.IO;
+using InitPro.Kassa.Api.Helpers;
 using InitPro.Kassa.Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace InitPro.Kassa.Api.Controllers
 {
-    [Route("api/[controller]/{id?}")]
+    [Route("api/[controller]")]
     [ApiController]
     public class SellController : ControllerBase
     {
@@ -16,16 +19,16 @@ namespace InitPro.Kassa.Api.Controllers
             _tokenH = tokenHelper;
             _sellH = sellH;
         }
-        
+
         [HttpPost]
         public IActionResult Post(SellModel model)
         {
             var tokenResponse = _tokenH.GetToken();
-            model.Token = tokenResponse.token;
+            var token = tokenResponse.token;
 
-            var sellResponse = _sellH.SellReceiptAccepted(model);
+            var sellResponse = _sellH.SellReceiptAccepted(model, token);
 
-            return Ok();
+            return Ok(sellResponse);
         }
     }
 }

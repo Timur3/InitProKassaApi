@@ -23,6 +23,8 @@ namespace InitPro.Kassa.Api
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddHttpClient();
             services.AddTransient<TokenHelper>();
+            services.AddTransient<SellHelper>();
+            services.AddTransient<VatHelper>();
             services.Configure<InitProSettings>(Configuration.GetSection("InitProSettings"));
         }
 

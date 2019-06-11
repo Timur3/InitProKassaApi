@@ -17,15 +17,15 @@ namespace InitPro.Kassa.Api.Helpers
 
         public TokenResponse GetToken()
         {
-            string operation = "getToken";
-            string _baseUrl = _settings.BaseUrl;
+            const string operation = "getToken";
+            var baseUrl = _settings.BaseUrl;
 
             var tokenRequest = new TokenRequest
             {
                 login = _settings.Login,
                 pass = _settings.Pass
             };
-            var client = new RestClient(_baseUrl + operation);
+            var client = new RestClient(baseUrl + operation);
             var request = new RestRequest(Method.POST);
             request.AddHeader("content-type", "application/json");
             request.AddParameter("application/json", Newtonsoft.Json.JsonConvert.SerializeObject(tokenRequest), ParameterType.RequestBody);

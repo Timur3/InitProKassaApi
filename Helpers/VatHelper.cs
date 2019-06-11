@@ -11,16 +11,16 @@ namespace InitPro.Kassa.Api.Helpers
             switch(vatType)
             {
                 case VatType.vat10:
-                    x = (sum * (10 / 100));
+                    x = sum * (decimal)0.1;
                     break;
                 case VatType.vat20:
-                    x = (sum * (20/100));
+                    x = sum * (decimal)0.2;
                     break;
                 default:
                     x = sum;
                     break;
             }
-            return x;
+            return Math.Round(x,2);
         }
     }
 }

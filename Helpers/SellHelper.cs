@@ -4,6 +4,7 @@ using InitPro.Kassa.Api.Models;
 using InitPro.Kassa.Api.Models.Request;
 using InitPro.Kassa.Api.Models.Response;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using RestSharp;
 
 namespace InitPro.Kassa.Api.Helpers
@@ -19,9 +20,9 @@ namespace InitPro.Kassa.Api.Helpers
             _vatHelper = vatHelper;
         }
 
-        public SellResponse SellReceiptAccepted(SellModel model)
+        public SellResponse SellReceiptAccepted(SellModel model, string token)
         {
-            string operation = "sell";
+            string operation = "/sell";
             string baseUrl = _settings.BaseUrl;
 
             var sellRequest = new SellRequest()
@@ -51,11 +52,12 @@ namespace InitPro.Kassa.Api.Helpers
                             sum = model.Sum,
                             agent_info = null,
                             measurement_unit = model.MeasurementUnit,
-                            payment_method = PaymentMethod.full_payment,
-                            payment_object = PaymentObject.commodity,
+                            payment_method = PaymentMethod.full_payment.ToString("F"),
+                            payment_object = PaymentObject.commodity.ToString("F"),
                             vat = new Vat()
                             {
-                                type = VatType.vat20
+                                type = VatType.vat20.ToString("F"),
+                                sum = null
                             }
                         }
                     },
@@ -73,21 +75,27 @@ namespace InitPro.Kassa.Api.Helpers
                         new Vat()
                         {
                             sum = _vatHelper.GetVatSum(model.Sum, VatType.vat20),
-                            type = VatType.vat20
+                            type = VatType.vat20.ToString("F")
                         }
                     }
                 },
                 service = new Service()
                 {
-                    callback_url = null
+                    callback_url = "http://kabinet.hm-ges.ru/"
                 },
-                timestamp = DateTime.Now
+                timestamp = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss")
             };
 
-            var client = new RestClient(baseUrl + operation);
+            var client = new RestClient(baseUrl + _settings.GroupCode + operation);
             var request = new RestRequest(Method.POST);
+            var param = Newtonsoft.Json.JsonConvert.SerializeObject(sellRequest, Formatting.Indented, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
             request.AddHeader("content-type", "application/json");
-            request.AddParameter("application/json", Newtonsoft.Json.JsonConvert.SerializeObject(sellRequest), ParameterType.RequestBody);
+            request.AddHeader("Token", token);
+            request.AddParameter("application/json", param, ParameterType.RequestBody);
+
             var response = client.Execute<SellResponse>(request);
             return response.Data;
         }

@@ -4,7 +4,7 @@ namespace InitPro.Kassa.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HomeController : ControllerBase
+    public class v1Controller : ControllerBase
     {
         [HttpGet]
         public IActionResult Get()
