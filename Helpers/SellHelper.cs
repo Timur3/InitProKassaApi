@@ -24,6 +24,7 @@ namespace InitPro.Kassa.Api.Helpers
         {
             string operation = "/sell";
             string baseUrl = _settings.BaseUrl;
+            decimal Sum = model.Price * model.Quantity;
 
             var sellRequest = new SellRequest()
             {
@@ -32,8 +33,8 @@ namespace InitPro.Kassa.Api.Helpers
                 {
                     client = new Client()
                     {
-                        email = "asu@mp-ges.ru",
-                        phone = "+79090334460"
+                        email = model.Email,
+                        phone = model.Phone
                     },
                     company = new Company()
                     {
@@ -49,7 +50,7 @@ namespace InitPro.Kassa.Api.Helpers
                             name = model.ItemName,
                             price = model.Price,
                             quantity = model.Quantity,
-                            sum = model.Sum,
+                            sum = Sum,
                             agent_info = null,
                             measurement_unit = model.MeasurementUnit,
                             payment_method = PaymentMethod.full_payment.ToString("F"),
@@ -66,15 +67,15 @@ namespace InitPro.Kassa.Api.Helpers
                         new Payment()
                         {
                             type = PaymentType.Electronic,
-                            sum = model.Sum
+                            sum = Sum
                         }
                     },
-                    total = model.Sum,
+                    total = Sum,
                     vats = new Vat[]
                     {
                         new Vat()
                         {
-                            sum = _vatHelper.GetVatSum(model.Sum, VatType.vat20),
+                            sum = _vatHelper.GetVatSum(Sum, VatType.vat20),
                             type = VatType.vat20.ToString("F")
                         }
                     }

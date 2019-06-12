@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using InitPro.Kassa.Api.Helpers;
+﻿using InitPro.Kassa.Api.Helpers;
 using InitPro.Kassa.Api.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 
 namespace InitPro.Kassa.Api.Controllers
 {
@@ -24,9 +21,16 @@ namespace InitPro.Kassa.Api.Controllers
         public IActionResult Post(SellModel model)
         {
             var tokenResponse = _tokenH.GetToken();
-            var token = tokenResponse.token;
+            if (tokenResponse.error != null)
+            {
+                return BadRequest(tokenResponse);
+            }
 
-            var sellResponse = _sellH.SellReceiptAccepted(model, token);
+            var sellResponse = _sellH.SellReceiptAccepted(model, tokenResponse.token);
+            if (sellResponse.error != null)
+            {
+                return BadRequest(sellResponse);
+            }
 
             return Ok(sellResponse);
         }

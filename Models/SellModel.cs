@@ -13,7 +13,6 @@ namespace InitPro.Kassa.Api.Models
         public string ItemName { get; set; }        // наименование позиции
         public decimal Price { get; set; }          // стоимость, указываем сумму за ЭЭ
         public decimal Quantity { get; set; }       // в нашем случае всегда будет 1
-        public decimal Sum { get; set; }            
         public string MeasurementUnit { get; set; } // единица измерения кВт\ч
     }
 }

@@ -20,9 +20,16 @@ namespace InitPro.Kassa.Api.Controllers
         public IActionResult Get(string uuid)
         {
             var tokenResponse = _tokenH.GetToken();
-            var token = tokenResponse.token;
-            var reportResponse = _reportH.GetReceiptStatus(uuid, token);
+            if (tokenResponse.error != null)
+            {
+                return BadRequest(tokenResponse);
+            }
 
+            var reportResponse = _reportH.GetReceiptStatus(uuid, tokenResponse.token);
+            if (reportResponse.error != null)
+            {
+                return BadRequest(reportResponse);
+            }
             return Ok(reportResponse);
         }
     }

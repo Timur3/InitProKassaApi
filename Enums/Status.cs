@@ -3,6 +3,7 @@
     public enum Status
     {
         fail,   //ошибка
-        wait    //ожидание
+        wait,   //ожидание
+        done    //готово
     }
 }

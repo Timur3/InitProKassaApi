@@ -20,8 +20,7 @@ namespace InitPro.Kassa.Api.Helpers
             var baseUrl = _settings.BaseUrl;
 
             var client = new RestClient(baseUrl + _settings.GroupCode + operation);
-            var request = new RestRequest(Method.POST);
-            request.AddHeader("content-type", "application/json");
+            var request = new RestRequest(Method.GET);
             request.AddHeader("Token", token);
 
             var response = client.Execute<ReportResponse>(request);
