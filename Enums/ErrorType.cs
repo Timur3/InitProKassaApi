@@ -1,8 +1,12 @@
-﻿namespace InitPro.Kassa.Api.Enums
+﻿using System.ComponentModel;
+
+namespace InitPro.Kassa.Api.Enums
 {
     public enum ErrorType
     {
-        system,     //системная
-        unknown     //неизвестная ошибка
+        [Description("Системная ошибка")]
+        system,
+        [Description("Неизвестная ошибка")]
+        unknown
     }
 }

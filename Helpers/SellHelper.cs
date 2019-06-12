@@ -71,14 +71,7 @@ namespace InitPro.Kassa.Api.Helpers
                         }
                     },
                     total = Sum,
-                    vats = new Vat[]
-                    {
-                        new Vat()
-                        {
-                            sum = _vatHelper.GetVatSum(Sum, VatType.vat20),
-                            type = VatType.vat20.ToString("F")
-                        }
-                    }
+                    vats = null 
                 },
                 service = new Service()
                 {
