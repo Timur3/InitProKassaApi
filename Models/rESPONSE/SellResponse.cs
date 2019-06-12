@@ -1,5 +1,4 @@
-﻿using System;
-using InitPro.Kassa.Api.Enums;
+﻿using InitPro.Kassa.Api.Enums;
 
 namespace InitPro.Kassa.Api.Models.Response
 {

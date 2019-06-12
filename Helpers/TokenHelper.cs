@@ -1,5 +1,5 @@
-﻿using System.Net.Http;
-using InitPro.Kassa.Api.Models;
+﻿using InitPro.Kassa.Api.Models;
+using InitPro.Kassa.Api.Models.Request;
 using InitPro.Kassa.Api.Models.Response;
 using Microsoft.Extensions.Options;
 using RestSharp;

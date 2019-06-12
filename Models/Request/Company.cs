@@ -1,7 +1,4 @@
-﻿using System.IO;
-using InitPro.Kassa.Api.Enums;
-
-namespace InitPro.Kassa.Api.Models.Request
+﻿namespace InitPro.Kassa.Api.Models.Request
 {
     public class Company
     {

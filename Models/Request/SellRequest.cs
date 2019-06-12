@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace InitPro.Kassa.Api.Models.Request
+﻿namespace InitPro.Kassa.Api.Models.Request
 {
     public class SellRequest
     {
