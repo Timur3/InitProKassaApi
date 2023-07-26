@@ -1,4 +1,6 @@
 .vs/
+.idea/
+.config/
 bin/
 obj/
 Invoices/
@@ -9,6 +11,6 @@ App_Data/
 Connections.config
 Backup/
 *.FileListAbsolute.txt
-appsettings.json
 node_modules/
 wwwroot/
+appsettings*.json
