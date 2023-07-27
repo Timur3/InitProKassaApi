@@ -1,6 +1,7 @@
 ﻿using InitPro.Kassa.Api.Models;
 using InitPro.Kassa.Api.Models.Request;
 using InitPro.Kassa.Api.Models.Response;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RestSharp;
 
@@ -8,15 +9,19 @@ namespace InitPro.Kassa.Api.Helpers
 {
     public class TokenHelper
     {
+        private readonly ILogger<TokenHelper> _logger;
         private readonly InitProSettings _settings;
 
-        public TokenHelper(IOptions<InitProSettings> options)
-        {         
+        public TokenHelper(IOptions<InitProSettings> options, ILogger<TokenHelper> logger)
+        {
+            _logger = logger;
             _settings = options.Value;
         }
 
         public TokenResponse GetToken()
         {
+            _logger.LogDebug("Requesting new InitPro token");
+            
             const string operation = "getToken";
             var baseUrl = _settings.BaseUrl;
 
