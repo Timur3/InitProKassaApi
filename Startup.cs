@@ -22,8 +22,11 @@ namespace InitPro.Kassa.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddHttpClient();
+            services.AddMvc();
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
             services.AddTransient<TokenHelper>();
             services.AddTransient<SellHelper>();
             services.AddTransient<VatHelper>();
@@ -42,6 +45,8 @@ namespace InitPro.Kassa.Api
             {
                 app.UseHsts();
             }
+            app.UseRouting();
+            app.UseEndpoints(e => e.MapDefaultControllerRoute());
             
             app.UseSerilogRequestLogging();
 

@@ -23,9 +23,9 @@ namespace InitPro.Kassa.Api.Helpers
             _logger = logger;
         }
 
-        public SellResponse SellReceiptAccepted(SellModel model, string token)
+        public SellResponse SellReceiptAccepted(SellModel model, string token, string operation)
         {
-            string operation = "/sell";
+            //string operation = "/sell";
             string baseUrl = _settings.BaseUrl;
             decimal Sum = model.Price * model.Quantity;
 
@@ -46,7 +46,7 @@ namespace InitPro.Kassa.Api.Helpers
                         sno = _settings.Sno,
                         payment_address = _settings.Payment_address
                     },
-                    items = new Item[]
+                    items = new[]
                     {
                         new Item()
                         {
@@ -54,14 +54,12 @@ namespace InitPro.Kassa.Api.Helpers
                             price = model.Price,
                             quantity = model.Quantity,
                             sum = Sum,
-                            agent_info = null,
                             measurement_unit = model.MeasurementUnit,
-                            payment_method = PaymentMethod.full_payment.ToString("F"),
-                            payment_object = PaymentObject.commodity.ToString("F"),
+                            payment_method = PaymentMethod.full_payment.ToString(),
+                            payment_object = PaymentObject.commodity.ToString(),
                             vat = new Vat()
                             {
-                                type = VatType.vat20.ToString("F"),
-                                sum = null
+                                type = VatType.vat20.ToString()
                             }
                         }
                     },
@@ -78,11 +76,10 @@ namespace InitPro.Kassa.Api.Helpers
                 },
                 service = new Service()
                 {
-                    callback_url = "http://kabinet.hm-ges.ru/"
+                    callback_url = "https://lk.mp-ges.ru/"
                 },
                 timestamp = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss")
             };
-
             var client = new RestClient(baseUrl + _settings.GroupCode + operation);
             var request = new RestRequest(Method.POST);
             var param = JsonConvert.SerializeObject(sellRequest, Formatting.Indented, new JsonSerializerSettings

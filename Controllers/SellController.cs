@@ -1,5 +1,7 @@
-﻿using InitPro.Kassa.Api.Helpers;
+﻿using System;
+using InitPro.Kassa.Api.Helpers;
 using InitPro.Kassa.Api.Models;
+using InitPro.Kassa.Api.Models.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InitPro.Kassa.Api.Controllers
@@ -20,19 +22,30 @@ namespace InitPro.Kassa.Api.Controllers
         [HttpPost]
         public IActionResult Post(SellModel model)
         {
+            SellResponse response;
+
             var tokenResponse = _tokenH.GetToken();
             if (tokenResponse.error != null)
             {
                 return BadRequest(tokenResponse);
             }
 
-            var sellResponse = _sellH.SellReceiptAccepted(model, tokenResponse.token);
-            if (sellResponse.error != null)
+            if (model.Price < 0)
             {
-                return BadRequest(sellResponse);
+                model.Price = Math.Abs(model.Price);
+                response = _sellH.SellReceiptAccepted(model, tokenResponse.token, "/sell_refund");
+            }
+            else
+            {
+                response = _sellH.SellReceiptAccepted(model, tokenResponse.token, "/sell");
             }
 
-            return Ok(sellResponse);
+            if (response.error != null)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
     }
 }
