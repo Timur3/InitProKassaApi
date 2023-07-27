@@ -6,6 +6,7 @@ using InitPro.Kassa.Api.Models.Response;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RestSharp;
+using Serilog;
 
 namespace InitPro.Kassa.Api.Helpers
 {
@@ -13,11 +14,13 @@ namespace InitPro.Kassa.Api.Helpers
     {
         private readonly InitProSettings _settings;
         private readonly VatHelper _vatHelper;
+        private readonly ILogger _logger;
 
-        public SellHelper(IOptions<InitProSettings> options, VatHelper vatHelper)
+        public SellHelper(IOptions<InitProSettings> options, VatHelper vatHelper, ILogger logger)
         {
             _settings = options.Value;
             _vatHelper = vatHelper;
+            _logger = logger;
         }
 
         public SellResponse SellReceiptAccepted(SellModel model, string token)
@@ -91,6 +94,12 @@ namespace InitPro.Kassa.Api.Helpers
             request.AddParameter("application/json", param, ParameterType.RequestBody);
 
             var response = client.Execute<SellResponse>(request);
+
+            _logger
+                .ForContext("Request", sellRequest, true)
+                .ForContext("Response", response.Data, true)
+                .Information("Receipt {RequestMethod} request {RequestPath} responded {StatusCode}", request.Method, operation, (int)response.StatusCode);
+
             return response.Data;
         }
     }

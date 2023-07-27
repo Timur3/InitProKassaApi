@@ -2,15 +2,18 @@
 using InitPro.Kassa.Api.Models.Response;
 using Microsoft.Extensions.Options;
 using RestSharp;
+using Serilog;
 
 namespace InitPro.Kassa.Api.Helpers
 {
     public class ReportHelper
     {
+        private readonly ILogger _logger;
         private readonly InitProSettings _settings;
 
-        public ReportHelper(IOptions<InitProSettings> options)
+        public ReportHelper(IOptions<InitProSettings> options, ILogger logger)
         {
+            _logger = logger;
             _settings = options.Value;
         }
 
@@ -24,6 +27,12 @@ namespace InitPro.Kassa.Api.Helpers
             request.AddHeader("Token", token);
 
             var response = client.Execute<ReportResponse>(request);
+            
+            _logger
+                .ForContext("Request", uuid, true)
+                .ForContext("Response", response.Data, true)
+                .Information("Receipt {RequestMethod} request {RequestPath} responded {StatusCode}", request.Method, operation, (int)response.StatusCode);
+            
             return response.Data;
         }
     }
